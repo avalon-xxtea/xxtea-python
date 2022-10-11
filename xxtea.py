@@ -12,7 +12,7 @@ def _long2str(v, w):
     if w:
         m = v[-1]
         if (m < n - 3) or (m > n):
-            return ''
+            return b''
         n = m
     s = struct.pack('<%iL' % len(v), *v)
     return s[0:n] if w else s
@@ -22,6 +22,8 @@ def _str2long(s, w):
     n = len(s)
     m = (4 - (n & 3) & 3) + n
     s = s.ljust(m, "\0")
+    if type(s) != type(b''):
+        s = str.encode(s)
     v = list(struct.unpack('<%iL' % (m >> 2), s))
     if w:
         v.append(n)
